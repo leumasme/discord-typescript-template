@@ -16,14 +16,15 @@ export interface Command {
 }
 
 export function checkPermissions(member: GuildMember | User, shouldHave: Permission): boolean {
-    switch (shouldHave) {
+    switch (shouldHave) { // Check for Permission or Higher using Fallthrough
+        case Permission.Anyone:
+            return true;
         case Permission.Administrator:
             if (member instanceof GuildMember && member.hasPermission("ADMINISTRATOR")) return true;
         case Permission.BotAdmin:
             if (member.id == "412691653573345290") true;
-        case Permission.Anyone:
-            return true;
     }
+    return false;
 }
 
 function isCommand(obj: any): obj is Command {
