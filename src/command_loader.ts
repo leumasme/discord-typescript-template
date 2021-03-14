@@ -36,14 +36,16 @@ function isCommand(obj: any): obj is Command {
     return false;
 }
 
-var commands: { [key: string]: Command } = {};
+var commands: Command[] = [];
 
 export async function load(bot: Client) {
     await loadCommands();
     bot.on("message", (msg)=>{
         if (msg.content.startsWith("!")) {
             let args = msg.content.substr(1).split(" ");
-            let cmd = commands[args[0]];
+            let cmd = commands.find((c)=>{
+                return c.name == args[0] || Array.isArray(c.alias) && c.alias.includes(args[0])
+            });
             if (cmd) {
                 if (checkPermissions(msg.member ?? msg.author, cmd.permissions)) {
                     cmd.execute(msg, args);
@@ -56,14 +58,14 @@ export async function load(bot: Client) {
 }
 
 export function loadCommands() {
-    commands = {};
+    commands = [];
     return new Promise<void>((resolve, reject) => {
         fs.readdir("./build/commands", (err, elems) => {
             console.log("hi " + JSON.stringify(elems));
             for (let fname of elems) {
                 let command = require("./commands/" + fname).default;
                 if (isCommand(command)) {
-                    commands[command.name] = command
+                    commands.push(command)
                     console.log(command.name)
                 }
             }
