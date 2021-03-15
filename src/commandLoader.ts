@@ -33,7 +33,7 @@ export function checkPermissions(member: GuildMember | User, shouldHave: Permiss
         case Permission.Administrator:
             if (member instanceof GuildMember && member.hasPermission("ADMINISTRATOR")) return true;
         case Permission.BotAdmin:
-            if (member.id == "412691653573345290") true;
+            if (member.id == "465944198449856522") return true;
     }
     return false;
 }
