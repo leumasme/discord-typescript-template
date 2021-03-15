@@ -62,7 +62,6 @@ export function loadCommands() {
     commands = [];
     return new Promise<void>((resolve, reject) => {
         fs.readdir("./build/commands", (err, elems) => {
-            console.log("hi " + JSON.stringify(elems));
             for (let fname of elems) {
                 let command = require("./commands/" + fname).default;
                 if (isCommand(command)) {
