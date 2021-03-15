@@ -45,7 +45,7 @@ export async function load(bot: Client) {
         if (msg.content.startsWith("!")) {
             let args = msg.content.substr(1).split(" ");
             let cmd = commands.find((c)=>{
-                return c.name == args[0] || Array.isArray(c.alias) && c.alias.includes(args[0])
+                return c.name == args[0] || c.alias?.includes(args[0])
             });
             if (cmd) {
                 if (checkPermissions(msg.member ?? msg.author, cmd.permissions)) {
