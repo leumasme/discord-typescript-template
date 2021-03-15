@@ -1,18 +1,29 @@
-import { Client, GuildMember, Message, User } from "discord.js";
+import { Client, DMChannel, GuildMember, Message, NewsChannel, TextChannel, User } from "discord.js";
 import * as fs from "fs";
 
+export enum ChannelTarget {
+    DmOnly,
+    GuildOnly,
+    Any
+}
 export enum Permission {
     Anyone,
     Administrator,
     BotAdmin
 }
-
 export interface Command {
     "name": string;
     "description"?: string;
     "alias"?: string[];
     "permissions": Permission;
+    "channels"?: ChannelTarget;
     "execute": (msg: Message, args: string[]) => void;
+}
+
+export function checkChannel(channel: TextChannel | DMChannel | NewsChannel, target: ChannelTarget): boolean {
+    if (channel instanceof NewsChannel) return false;
+    if (target == ChannelTarget.Any) return true
+    return target == (channel instanceof DMChannel ? ChannelTarget.DmOnly : ChannelTarget.GuildOnly)
 }
 
 export function checkPermissions(member: GuildMember | User, shouldHave: Permission): boolean {
@@ -41,15 +52,15 @@ var commands: Command[] = [];
 
 export async function load(bot: Client) {
     await loadCommands();
-    bot.on("message", (msg)=>{
+    bot.on("message", (msg) => {
         if (msg.content.startsWith("!")) {
             let args = msg.content.substr(1).split(" ");
-            let cmd = commands.find((c)=>{
+            let cmd = commands.find((c) => {
                 return c.name == args[0] || c.alias?.includes(args[0])
             });
             if (cmd) {
                 if (checkPermissions(msg.member ?? msg.author, cmd.permissions)) {
-                    cmd.execute(msg, args);
+                    if (checkChannel(msg.channel, cmd.channels ?? ChannelTarget.Any)) cmd.execute(msg, args);
                 } else {
                     // TODO: Handle Missing Permissions
                 }
