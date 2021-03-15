@@ -1,6 +1,6 @@
 import { Client } from "discord.js"
 import { config as loadEnv } from "dotenv"
-import { load } from "./command_loader";
+import { load } from "./commandLoader";
 loadEnv()
 
 var bot = new Client();

@@ -1,4 +1,4 @@
-import { Command, Permission } from "../command_loader"
+import { Command, Permission } from "../commandLoader"
 export default ({
     "name": "ping",
     "execute": (msg, args) => { msg.channel.send("Hello!") },
