@@ -74,10 +74,11 @@ export function loadCommands() {
     return new Promise<void>((resolve, reject) => {
         fs.readdir("./build/commands", (err, elems) => {
             for (let fname of elems) {
+                delete require.cache[require.resolve("./commands/" + fname)]
                 let command = require("./commands/" + fname).default;
                 if (isCommand(command)) {
                     commands.push(command)
-                    console.log(command.name)
+                    console.log("Loaded Command "+command.name + " :  " + command.description)
                 }
             }
             resolve();
