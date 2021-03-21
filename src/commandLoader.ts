@@ -48,7 +48,7 @@ function isCommand(obj: any): obj is Command {
     return false;
 }
 
-var commands: Command[] = [];
+export var commands: Command[] = [];
 
 export async function load(bot: Client) {
     await loadCommands();

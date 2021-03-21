@@ -3,7 +3,7 @@ import { config as loadEnv } from "dotenv"
 import { load } from "./commandLoader";
 loadEnv()
 
-var bot = new Client();
+export var bot = new Client();
 
 bot.on("ready", ()=>{
     console.log("Hello, Discord!");
