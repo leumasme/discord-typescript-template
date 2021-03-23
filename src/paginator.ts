@@ -30,5 +30,7 @@ export function createReactionPaginator(next: PageCreator, msg: Message, options
         }
         reaction.users.remove(user)
         return true;
-    }, {"idle": options.inactivityTimeout})
+    }, {"idle": options.inactivityTimeout}).once("end", (reason)=>{
+        msg.delete();
+    })
 }
