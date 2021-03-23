@@ -17,7 +17,12 @@ export default ({
     "execute": (msg, args) => {
         let embed = getNthPage()
         msg.channel.send(embed).then(reply => {
-            createReactionPaginator(getNthPage, reply, { "allowedUsers": msg.author.id, pageCount: commands.length / 10 })
+            msg.delete();
+            createReactionPaginator(getNthPage, reply, {
+                "allowedUsers": msg.author.id,
+                "pageCount": commands.length / 10,
+                "inactivityTimeout": 10000
+            })
         });
     },
     "permissions": Permission.Anyone,
