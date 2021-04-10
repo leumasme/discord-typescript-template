@@ -9,3 +9,11 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+// Member model used for the 
+model Member {
+    guildid String
+    userid String
+    counter Int @default(0)
+    @@id([guildid, userid])
+}
