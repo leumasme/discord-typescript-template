@@ -1,8 +1,10 @@
 import { Client } from "discord.js"
 import { config as loadEnv } from "dotenv"
 import { load } from "./commandLoader";
+import { PrismaClient } from "@prisma/client";
 loadEnv()
 
+export var db = new PrismaClient();
 export var bot = new Client();
 
 bot.on("ready", ()=>{
