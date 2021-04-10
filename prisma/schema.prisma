@@ -10,7 +10,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Member model used for the 
+// Member model used for the counter example command
 model Member {
     guildid String
     userid String
