@@ -1,0 +1,19 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./bot.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Member model used for the counter example command
+model Member {
+    guildid String
+    userid String
+    counter Int @default(0)
+    @@id([guildid, userid])
+}

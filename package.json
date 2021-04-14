@@ -6,16 +6,34 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node build/index.js",
-    "launch": "npm run build && npm run start"
+    "launch": "npm run build && npm run start",
+    "clean": "del build /Q /S",
+    "db:build": "npx prisma db push --preview-feature",
+    "db:commit": "npx prisma migrate dev --preview-feature",
+    "db:clean": "prisma migrate reset --preview-feature",
+    "rebuild": "npm run clean && npm run db:build && npm run build"
   },
+  "//": [
+    "npm run scripts:",
+    "build: pre-deploy; transpile typescript files to javascript",
+    "start: deploy; run currently built javascript files",
+    "launch: indev; transpile typescript files and then start",
+    "clean: general, clean up build folder",
+    "db:build: indev, build current database schema to test indev",
+    "db:commit: pre-deploy, create a committable migration for database schema changes",
+    "db:clean: general; recreate the database and apply the schema",
+    "rebuild: indev; clean up and build everything"
+  ],
   "author": "Temm",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^14.14.34",
     "@types/ws": "^7.4.0",
+    "prisma": "^2.20.1",
     "typescript": "^4.2.3"
   },
   "dependencies": {
+    "@prisma/client": "^2.20.1",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0"
   }

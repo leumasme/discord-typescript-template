@@ -78,7 +78,7 @@ export function loadCommands() {
                 let command = require("./commands/" + fname).default;
                 if (isCommand(command)) {
                     commands.push(command)
-                    console.log("Loaded Command "+command.name + " :  " + command.description)
+                    console.log("Loaded Command " + command.name + " :  " + command.description)
                 }
             }
             resolve();
