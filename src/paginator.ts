@@ -12,7 +12,7 @@ export function createReactionPaginator(next: PageCreator, msg: Message, options
     let page = options.initialPage ?? 1;
     msg.react("⬅️");
     msg.react("➡️");
-    msg.createReactionCollector((reaction: MessageReaction, user: ClientUser)=>{
+    msg.createReactionCollector((reaction: MessageReaction, user: ClientUser) => {
         if (user == bot.user) return false;
         if (options.allowedUsers) {
             let allowedUsers = Array.isArray(options.allowedUsers) ? options.allowedUsers : [options.allowedUsers]
@@ -30,7 +30,7 @@ export function createReactionPaginator(next: PageCreator, msg: Message, options
         }
         reaction.users.remove(user)
         return true;
-    }, {"idle": options.inactivityTimeout}).once("end", (reason)=>{
+    }, { "idle": options.inactivityTimeout }).once("end", (reason) => {
         msg.delete();
     })
 }

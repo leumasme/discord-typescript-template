@@ -37,7 +37,7 @@ export default ({
                         counter: true
                     }
                 })
-                msg.channel.send("Your counter is currently "+((counter?.counter) ?? "not set"))
+                msg.channel.send("Your counter is currently " + ((counter?.counter) ?? "not set"))
                 break;
         }
     },
