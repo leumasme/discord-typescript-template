@@ -8,7 +8,7 @@ export default ({
             case "add":
                 await db.member.upsert({
                     create: {
-                        guildid: msg.guild!.id,
+                        guildid: msg.guild.id,
                         userid: msg.author.id
                     },
                     update: {
@@ -18,7 +18,7 @@ export default ({
                     },
                     where: {
                         guildid_userid: {
-                            guildid: msg.guild!.id,
+                            guildid: msg.guild.id,
                             userid: msg.author.id
                         }
                     }
@@ -29,7 +29,7 @@ export default ({
                 let counter = await db.member.findUnique({
                     where: {
                         guildid_userid: {
-                            guildid: msg.guild!.id,
+                            guildid: msg.guild.id,
                             userid: msg.author.id
                         }
                     },
