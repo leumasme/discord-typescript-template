@@ -1,4 +1,4 @@
-import { Client, DMChannel, GuildMember, Message, NewsChannel, TextChannel, User } from "discord.js";
+import { Client, DMChannel, Guild, GuildMember, Message, NewsChannel, TextChannel, User } from "discord.js";
 import * as fs from "fs";
 
 export enum ChannelTarget {
@@ -11,14 +11,23 @@ export enum Permission {
     Administrator,
     BotAdmin
 }
-export interface Command {
+export type Command = {
     "name": string;
     "description"?: string;
     "alias"?: string[];
     "permissions": Permission;
-    "channels"?: ChannelTarget;
+    // "channels"?: ChannelTarget;
+    // "execute": (msg: Message, args: string[]) => void;
+} & ({
     "execute": (msg: Message, args: string[]) => void;
-}
+    "channels"?: ChannelTarget.Any | never;
+} | {
+    "execute": (msg: Message & { guild: Guild }, args: string[]) => void;
+    "channels": ChannelTarget.GuildOnly;
+} | {
+    "execute": (msg: Message & { guild: null }, args: string[]) => void;
+    "channels": ChannelTarget.DmOnly;
+})
 
 export function checkChannel(channel: TextChannel | DMChannel | NewsChannel, target: ChannelTarget): boolean {
     if (channel instanceof NewsChannel) return false;
@@ -60,7 +69,8 @@ export async function load(bot: Client) {
             });
             if (cmd) {
                 if (checkPermissions(msg.member ?? msg.author, cmd.permissions)) {
-                    if (checkChannel(msg.channel, cmd.channels ?? ChannelTarget.Any)) cmd.execute(msg, args);
+                    // TODO: Find a cleaner way of doing this
+                    if (checkChannel(msg.channel, cmd.channels ?? ChannelTarget.Any)) cmd.execute(<any>msg, args);
                 } else {
                     // TODO: Handle Missing Permissions
                 }
